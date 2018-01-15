@@ -1,0 +1,58 @@
+<app-page-header [heading]="'Expenses'" [icon]="'fa-th-list'"></app-page-header>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mb-3">
+            <div class="card-header"> 
+                <div class="row">
+                    <div class="col col-sm-10">
+                        Liste des dépenses
+                    </div>
+                    <div class="col col-sm-2">
+                        <div ngbDropdown class="d-inline-block dropdown">
+                            <button class="btn btn-outline-primary" ngbDropdownToggle>Export to</button>
+                                <div ngbDropdownMenu>
+                                    <button class="dropdown-item" (click)="SaveDemo()">Default CSV</button>
+                                    <button class="dropdown-item" (click)="getligne()">CSV2</button>
+                                    <hr>
+                                    <button  routerLink="/new-export" class="dropdown-item"><i class="fa fa-fw fa-edit"></i>New format csv</button>
+                                </div>
+                        </div>    
+                    </div>
+                </div>  
+            </div>
+
+            <div class="card-body table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th><input class="ng-tns-c5-0" type="checkbox" value=""></th>
+                            <th></th>
+                            <th>Titre</th>
+                            <th>Catégorie</th>
+                            <th>Affaire</th>
+                            <th>Mission</th>
+                            <th>Date</th>
+                            <th>TVA</th>
+                            <th>TTC(EUR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let x  of Export">
+                            <td ><input class="ng-tns-c5-0" type="checkbox" value=""></td>
+                             <td><img src="{{x.imagePath}}" width="75" height="75" class="img-rounded" /></td>
+                             <td>{{x.Nom }}</td>
+                             <td>{{x.Categorie }}</td>
+                             <td>{{x.Affaire}}</td>
+                             <td>{{x.date}}</td>
+                             <td>{{x.date_depence }}</td>
+                             <td>{{x.TVA }}</td>
+                             <td>{{x.value }}</td>      
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,48 @@
+<div [@routerTransition]>
+    <app-page-header   [heading]="'Parents'" [icon]="'fa-edit'"></app-page-header>
+    
+ 
+                <div class="col-lg-12">
+                    <div class="card-header">
+                        <br>
+                        <div class="row">
+                            <div class="col-xl-4 text-xs-center">
+                                 <input  class="form-control" placeholder="{{ 'First name' | translate }}" type="text">
+                            </div>
+                            <div class="col-xl-4 text-xs-center">
+                                 <input  class="form-control" placeholder="{{ 'Last name' | translate }}" type="text">
+                            </div>
+                            <div class="col-xl-4 text-xs-center">
+                                 <input  class="form-control" placeholder="{{ 'Mail' | translate }}" type="text">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                                <div class="col-xl-4 text-xs-center">
+                                   <input  class="form-control" placeholder="{{ 'Phone' | translate }}" type="text">
+                                </div>
+                                <div class="col-xl-4 text-xs-center">
+                                   <input  class="form-control" placeholder="{{ 'Login' | translate }}" type="text">
+                                </div>
+                                <div class="col-xl-4 text-xs-center">
+                                     <input  class="form-control" placeholder="{{ 'Password' | translate }}" type="text">
+                                </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                                <div class="col-xl-4 text-xs-center">
+                                </div>
+                                <div class="col-xl-4 text-xs-center">
+                                </div>
+                                  <div class="col-xl-4">
+                                    <button class="btn btn-success" type="button">{{ 'Enregister' | translate }}</button>
+                                    <button class="btn btn-default" type="button">{{ 'Cancul' | translate }}</button>
+                                </div>
+                        </div>
+
+                    </div>
+
+                </div>
+    <app-read-parent></app-read-parent>
+    
+</div>

@@ -1,0 +1,79 @@
+<app-page-header [heading]="'CSV Export'" [icon]="'fa fa-fw fa-edit'"></app-page-header>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card mb-3">
+            <div class="card-header"> 
+                <h3>New Export Format</h3>
+            </div>
+            <div class="card-body">
+                <!-- div for repeat -->
+                <div  class="col-xl-12" dnd-sortable-container [sortableData]="Order">
+                    <div class="card mb-3" *ngFor="let item of Order; let i = index"  dnd-sortable [sortableIndex]="i">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col col-sm-2">
+                                   <!--  {{i + 1}}-->
+                                     Name
+                                </div>
+                                <div class="col col-sm-4">
+                                   <input type="text" class="form-control" value="{{item}} ">
+                                </div>
+                                <div class="col col-sm-5">
+                                        
+                                </div>
+                                <div class="col col-sm-1">
+                                        <a (click)="deletelist(i)"> X </a> 
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col col-sm-2">
+                                 Formula    
+                                </div>
+                                <div class="col col-sm-4">
+                                    <select class="form-control">
+                                        <option  class="ng-tns-c6-2">1</option>
+                                        <option  class="ng-tns-c6-2">2</option>
+                                    </select>   
+                                </div>
+                                
+                            </div>    
+                        </div>
+                    </div>
+                    <a (click)="getlist(i)">Add </a> 
+                    <a (click)="register() ">create </a>   
+                    <a (click)="getallcsv()">get csv </a>             
+                </div> 
+                <!-- End div -->  
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+           <div class="card mb-3">
+           <div class="card-header"> 
+               <h3>Exemple output</h3>
+           </div>
+            <div class="card-body table-responsive">
+                <table class="table table-bordered">
+                        <thead>
+                            <tr style="background: rgb(185, 209, 255)">
+                                <th ></th>
+                                <th *ngFor="let item of Order; let i = index" > {{ getCaracter(i) }} </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let Ex  of Export ; let a = index" >
+                                <th style="background:rgb(185, 209, 255)">{{ a+1 }}</th>
+                                <td *ngFor="let item of Order; let i = index"  style="size:5"> {{ item}}</td>
+                            </tr>
+                        </tbody>
+                  </table> 
+            </div>
+       </div>
+    </div>  
+</div>
