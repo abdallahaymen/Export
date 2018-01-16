@@ -3,8 +3,8 @@ export class Expenses
     id: number ;
     date_depence: string;
     Nom: string;
-    Catégorie: string;
-    Value: string;
+    Categorie: string;
+    value: string;
     TVA: string;
     moyen_payement: string;
     Nom_marchand: string;
@@ -12,4 +12,5 @@ export class Expenses
     Affaire: string;
     date: string;
     urlimg: string;
+    ischeck: boolean;
 }

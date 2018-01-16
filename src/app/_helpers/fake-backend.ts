@@ -16,31 +16,50 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // array in local storage for registered users
         let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
+        let  CSVLISTNAME=  'testcsv' ;
+        let  CSV: any[] = JSON.parse(localStorage.getItem(CSVLISTNAME)) || [];
 
-        // wrap in delayed observable to simulate server api call
+              // wrap in delayed observable to simulate server api call
         return Observable.of(null).mergeMap(() => {
 
 
            // create CSV
            if (request.url.endsWith('/api/CSV') && request.method === 'POST') {
-                // get all CSV-format object from post body
-                let  CSV: any[] = JSON.parse(localStorage.getItem('CSV')) || [];
-                // get new CSV object from post body
-                let newCSV = request.body;
 
-                // save new CSV
-                newCSV.id = users.length + 1;
+                // get new CSV object from post body
+                 let newCSV = request.body;
+
+
+                 let duplicatescv = users.filter(user => { return user.name === newCSV.name; }).length;
+                 if (duplicatescv) {
+                     return Observable.throw(newCSV.name + '" is already taken');
+                 }
+              // save new CSV
+                newCSV.id = CSV.length + 1;
                 CSV.push(newCSV);
-                localStorage.setItem('CSV', JSON.stringify(newCSV));
+                localStorage.setItem(CSVLISTNAME, JSON.stringify(newCSV));
+
 
                 // respond 200 OK
                 return Observable.of(new HttpResponse({ status: 200 }));
             }
 
 
+             // get list csv
+             if (request.url.endsWith('/api/CSV') && request.method === 'GET') {
+                let  CSV: any[] = JSON.parse(localStorage.getItem(CSVLISTNAME)) || [];
+                // check for fake auth token in header and return users if valid,
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                    return Observable.of(new HttpResponse({ status: 200, body: CSV }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return Observable.throw('Unauthorised');
+                }
+            }
+
             // get users
             if (request.url.endsWith('/api/CSV') && request.method === 'GET') {
-                let  CSV: any[] = JSON.parse(localStorage.getItem('CSV')) || [];
+                let  CSV: any[] = JSON.parse(localStorage.getItem('CSVlist')) || [];
                 // check for fake auth token in header and return users if valid,
                 if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
                     return Observable.of(new HttpResponse({ status: 200, body: CSV }));

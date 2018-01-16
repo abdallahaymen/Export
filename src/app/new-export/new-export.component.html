@@ -8,6 +8,21 @@
             </div>
             <div class="card-body">
                 <!-- div for repeat -->
+                <div  class="col-xl-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                
+                                <div class="col col-sm-2">
+                                    <p>Name:</p>   
+                                </div>
+                                <div class="col col-sm-4">
+                                    <p> <input type="text" [(ngModel)]="name" class="form-control" (change)="dataChanged($event)"></p>   
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                </div>
                 <div  class="col-xl-12" dnd-sortable-container [sortableData]="Order">
                     <div class="card mb-3" *ngFor="let item of Order; let i = index"  dnd-sortable [sortableIndex]="i">
                         <div class="card-body">
@@ -17,7 +32,8 @@
                                      Name
                                 </div>
                                 <div class="col col-sm-4">
-                                   <input type="text" class="form-control" value="{{item}} ">
+                                             
+                                   <input type="text" id="{{i}}" class="form-control" value="{{item.entet}}" [(ngModel)]="item.entet">
                                 </div>
                                 <div class="col col-sm-5">
                                         
@@ -29,21 +45,29 @@
                             <br>
                             <div class="row">
                                 <div class="col col-sm-2">
-                                 Formula    
+                                    Formula
                                 </div>
                                 <div class="col col-sm-4">
-                                    <select class="form-control">
-                                        <option  class="ng-tns-c6-2">1</option>
-                                        <option  class="ng-tns-c6-2">2</option>
-                                    </select>   
+                                   
+
+                                    <select [(ngModel)]="item.formule" (ngModelChange)="dataChanged($event)" name="data" class="form-control">
+                                        <option *ngFor="let currentData of listfomule" [ngValue]="currentData.formule">
+                                              {{currentData.formule}}
+                                         </option>
+                                 </select>
                                 </div>
                                 
                             </div>    
                         </div>
                     </div>
-                    <a (click)="getlist(i)">Add </a> 
+                    <a (click)="getlist()">Add </a> 
                     <a (click)="register() ">create </a>   
-                    <a (click)="getallcsv()">get csv </a>             
+                    <a (click)="getallcsv()">get csv </a>    
+                    
+                    <a (click)="getlist()"> <button type="button" class="btn btn-outline-primary">Add column</button> </a>
+                    
+                    <a (click)="register() "><button type="button" class="btn btn-outline-success">Save Export Format</button></a>
+                   
                 </div> 
                 <!-- End div -->  
             </div>
@@ -67,9 +91,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <th style="background:rgb(185, 209, 255)">{{ 0 }}</th>
+                                <td *ngFor="let item of Order; let i = index"  style="size:5"> {{item.entet}}</td>
+                            </tr>
                             <tr *ngFor="let Ex  of Export ; let a = index" >
                                 <th style="background:rgb(185, 209, 255)">{{ a+1 }}</th>
-                                <td *ngFor="let item of Order; let i = index"  style="size:5"> {{ item}}</td>
+                                <td *ngFor="let item of Order; let i = index"  style="size:5"> {{getvalue(a,i)}}</td>
                             </tr>
                         </tbody>
                   </table> 

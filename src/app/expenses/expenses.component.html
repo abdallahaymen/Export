@@ -1,3 +1,5 @@
+
+
 <app-page-header [heading]="'Expenses'" [icon]="'fa-th-list'"></app-page-header>
 <div class="row">
     <div class="col-lg-12">
@@ -11,8 +13,12 @@
                         <div ngbDropdown class="d-inline-block dropdown">
                             <button class="btn btn-outline-primary" ngbDropdownToggle>Export to</button>
                                 <div ngbDropdownMenu>
-                                    <button class="dropdown-item" (click)="SaveDemo()">Default CSV</button>
-                                    <button class="dropdown-item" (click)="getligne()">CSV2</button>
+                                    <button class="dropdown-item" (click)="SaveDemo()">Default csv</button>
+                                    
+                                    <div *ngFor="let x of listeoutput">
+                                    <button class="dropdown-item" (click)="SaveDemo()">{{x.format}}</button>
+                                    
+                                    </div>
                                     <hr>
                                     <button  routerLink="/new-export" class="dropdown-item"><i class="fa fa-fw fa-edit"></i>New format csv</button>
                                 </div>
@@ -38,7 +44,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let x  of Export">
-                            <td ><input class="ng-tns-c5-0" type="checkbox" value=""></td>
+                            <td ><input class="ng-tns-c5-0" type="checkbox" value="" checked="{{x.ischeck}}"></td>
                              <td><img src="{{x.imagePath}}" width="75" height="75" class="img-rounded" /></td>
                              <td>{{x.Nom }}</td>
                              <td>{{x.Categorie }}</td>

@@ -1,6 +1,8 @@
+import { Format } from './index';
+
 export class Export {
-    id: number;
-    title: Array<string>;
-    order: any;
+    order: Array<Format>;
     format: string;
+    name: string;
+    id: number;
 }

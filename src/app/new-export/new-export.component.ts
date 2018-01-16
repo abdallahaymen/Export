@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { saveAs } from 'file-saver/FileSaver';
 import { AlertService, UserService } from '../_services/index';
-import {Export} from '../_models/index';
+import {Export, Format, Expenses} from '../_models/index';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Route } from '@angular/router/src/config';
 
 @Component({
     selector: 'app-new-export',
@@ -10,80 +12,122 @@ import {Export} from '../_models/index';
     styleUrls: ['./new-export.component.scss']
 })
 export class NewexoprtComponent implements OnInit {
-    Export: Array<any> = [];
+    @Output() show_csv_event = new EventEmitter();
+    model:  = {};
+    Export: Array<Expenses> = [];
     csvmodel: any= [];
     csvlist: Export[] = [] ;
-    Order: Array<String> = [ 'Date depence', 'Nom de la dépense' , 'Catégorie',  'TTC',
-    'TVA', 'Moyen de paiement', 'Nom du marchand', 'Adresse du marchand' , 'Id de la dépense', 'Affaire'];
-    index: Array<number> = [0, 3 , 1 , 2];
+    Order: Array<Format>;
+    defaultcsv: Export[]= [];
+    defaultcsv2: Export[]= [];
+    listfomule: Array<Format>;
+    name: string;
+    format = 'csv';
     fiche: String;
     constructor(
         private userService: UserService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private router: Router
     ) {
-        this.Export.push({
-            id: 1,
-            type: 'success',
-            date: '12/10/2017',
-            message: 'This is an success',
-        }, {
-            id: 2,
-            type: 'info',
-            date: '12/10/2015',
-            message: 'This is an info ',
-        }, {
-            id: 3,
-            type: 'warning',
-            date: '12/10/2014',
-            message: 'xxx',
-        });
+        this.Export = JSON.parse(localStorage.getItem('Expenses'));
+        this.defaultcsv = JSON.parse(localStorage.getItem('CSVdefault'));
+        this.defaultcsv2 = JSON.parse(localStorage.getItem('CSVdefault'));
+        this.Order = this.defaultcsv[0].order;
+        this.listfomule = this.defaultcsv2[0].order;
+
     }
     register() {
 
-        this.csvmodel.push({
-            format: 'csv',
+       /* 
+        }),*/
+
+        this.model = {
+            format: this.format,
             order: this.Order,
-            title: this.index
-        });
-        this.userService.createcsv(this.csvmodel)
+            name: this.name,
+        };
+
+        console.log(this.name);
+        console.log(this.model);
+       /* this.userService.createcsv(this.model)
             .subscribe(
                 data => {
                     this.alertService.success('Registration successful', true);
-                    alert('Registration successful');
+                    console.log('Registration successful');
                 },
                 error => {
                     this.alertService.error(error);
-                    alert('eror csv');
-            });
+                    console.log(error);
+
+                });
+
+        */
+        this.csvmodel.push({
+            format: this.format,
+            order: this.Order,
+            name: this.name});
+
+       localStorage.setItem('CSVdefault', JSON.stringify(this.csvmodel));
+        this.router.navigate(['/expenses']);
+    }
+    chengeSelect(i) {
+console.log(i);
     }
 
-    getallcsv() {
-            this.userService.getAllcsv().subscribe(users => { this.csvlist = users; });
-            this.Order = this.csvlist[0].order;
+
+
+    ngOnInit() {  }
+    getlist() {
+        this.Order.push(
+            {
+                formule: '',
+                entet: 'Column ' + (this.Order.length + 1)
+            }
+            ) ;
+
     }
-    ngOnInit() { this.getallcsv(); }
-    //retun entet exel
+
+    deletelist(i) { this.Order.splice(i, 1) ;
+    console.log(this.Order);
+    console.log(this.listfomule);
+    }
     getCaracter(i) { return String.fromCharCode(65 + i); }
-    getlist(i) { this.Order.push('aa') ; }
-    deletelist(i) { this.Order.splice(i, 1) ; }
-    getdata( x, i) {
-       var  str = '';
-       switch (x) {
-            case x = 'id':
-                  str += 'id' + ';' ;
-                  break;
-             case x = 'type':
-                   str += 'type' + ';' ;
-                  break;
-             case x = 'date':
-                   str = 'date'  ;
-                  break;
-             case x = 'message':
-                   str += 'message' + ';' ;
-                  break;
-             default:
-                break;
-        }
+
+    dataChanged($event) {
+        console.log(this.name);
+    }
+
+
+
+
+    getvalue(Ex: number, item) {
+        let Entry= this.Export[Ex] ;
+                  let x = this.Order[item].formule;
+                    switch (x) {
+                        case x = 'date_depence':
+                            return Entry.date_depence ;
+                        case x = 'Nom':
+                            return Entry.Nom ;
+                        case x = 'Categorie':
+                             return Entry.Categorie ;
+                        case x = 'value':
+                             return Entry.value  ;
+                        case x = 'TVA':
+                            return Entry.TVA ;
+                        case x = 'moyen_payement':
+                            return Entry.moyen_payement ;
+                        case x = 'Nom_marchand':
+                            return Entry.Nom_marchand  ;
+                        case x = 'pays':
+                            return Entry.pays  ;
+                        case x = 'id':
+                            return Entry.id ;
+                        case x = 'Affaire':
+                            return Entry.Affaire ;
+                       default:
+                            return '';
+
+                    }
     }
 }
 

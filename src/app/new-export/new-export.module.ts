@@ -6,10 +6,12 @@ import { PageHeaderModule } from '../shared';
 import { BlankPageRoutingModule } from './new-export-routing.module';
 import {  NewexoprtComponent } from './new-export.component';
 import { DndModule } from 'ng2-dnd';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
     imports: [CommonModule ,
+              FormsModule,
               BlankPageRoutingModule,
               TranslateModule,
               NgbModule.forRoot(),

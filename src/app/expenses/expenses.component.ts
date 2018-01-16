@@ -1,77 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, VERSION } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { saveAs } from 'file-saver/FileSaver';
+import { Export, Format } from '../_models/index';
+import { UserService } from '../_services/index';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
     selector: 'app-expenses',
     templateUrl: './expenses.component.html',
     styleUrls: ['./expenses.component.scss']
 })
-export class ExpensesComponent implements OnInit {
+export class ExpensesComponent implements OnInit, OnChanges {
     Export: Array<any> = [];
-    Data: Array<any> = [];
-    Nom_marchand: string;
-    Order: Array<String> = [ 'id', 'date_depence', 'Nom' , 'Catégorie',  'value',
-    'TVA', 'moyen_payement', 'Nom_marchand', 'pays' , 'Affaire', 'Date'];
-
-    index: Array<number> = [0, 3 , 1 , 2];
+    defaultcsv: Export[]= [];
+    Order: Array<Format>;
     fiche: String;
-    public sliders: Array<any> = [];
-    constructor() {
+    listeoutput:  Array<any> = [];
 
-        this.Export.push({
-            id: 1 ,
-            date_depence: '12/12/2017',
-            Nom: 'usa-restaurant-sales-tax-receipt',
-            Categorie: 'Restauration',
-            value: '192,97',
-            TVA: '',
-            moyen_payement: 'Card',
-            Nom_marchand: 'Abc Restaurant',
-            pays: 'États-Unis',
-            Affaire: '1',
-            date: '10/12/207',
-            imagePath: 'assets/images/info3.jpg'
-        }, {
-            id: 2 ,
-            date_depence: '10/12/2017',
-            Nom: 'invoice',
-            Categorie: 'Avion',
-            value: '140',
-            TVA: '',
-            moyen_payement: 'Card',
-            Nom_marchand: 'Abc',
-            pays: 'France',
-            Affaire: '1',
-            date: '25/10/207',
-            imagePath: 'assets/images/info1.jpg'
-        }, {
-            id: 3 ,
-            date_depence: '10/12/2017',
-            Nom: 'restaurant-Quebec',
-            Categorie: 'Restauration',
-            value: '20',
-            TVA: '',
-            moyen_payement: 'Card',
-            Nom_marchand: 'Abc Restaurant',
-            pays: 'Canada',
-            Affaire: '1',
-            date: '9/12/207',
-            imagePath: 'assets/images/info2.jpg'
-        }
-    );
+
+
+    constructor( private userService: UserService) {
+      this.Export = JSON.parse(localStorage.getItem('Expenses'));
+      this.defaultcsv = JSON.parse(localStorage.getItem('CSVdefault'));
+      this.Order = this.defaultcsv[0].order;
+      this.GetEntet();
+      this.GetData();
     }
 
 
+    loadAllUsers() {
+        this.userService.getAllcsv().subscribe(csvlist => { this.listeoutput = csvlist; });
+       // this.userService.getAll().subscribe(csvlist => { this.listeoutput = csvlist; });
+
+        console.log('loadAllUsers');
+        console.log(this.listeoutput);
+        console.log(this.Export);
+    }
+
  SaveDemo() {
 
-
-         for (let Entry of this.Export) {
-           this.fiche = this.fiche + Entry.id + ';' + Entry.type + ';' + Entry.date + ';' + Entry.message + '\n' ;
-             }
-
         const ff = new Blob([this.fiche], { type: 'text/csv;charset=utf-8' });
-        saveAs(ff, 'helloworld.csv');
+        saveAs(ff, 'Defaultcsv.csv');
   }
 
 
@@ -86,47 +55,56 @@ export class ExpensesComponent implements OnInit {
 
 //return entet 
 private GetEntet() {
-   var Entet = '' ;
+   this.fiche = '';
+   for (let x of this.Order) {
+       this.fiche += x.entet + ';';
+   }
+    this.fiche += '\n';
 
-   for (let x of this.Order ) {
-
-        switch (x) {
-           case x = 'id':
-                 Entet += 'id' + ';' ;
-                 break;
-            case x = 'type':
-                 Entet += 'type' + ';' ;
-                 break;
-            case x = 'date':
-                 Entet += 'date' + ';' ;
-                 break;
-            case x = 'message':
-                 Entet += 'message' + ';' ;
-                 break;
-            default:
-               break;
-       }
-    }
-    this.fiche += Entet + '\n';
 }
+
+ngOnInit() { this.loadAllUsers(); }
+
+ngOnChanges() {  }
 
 //return data
 private GetData() {
+
     for (let Entry of this.Export) {
         let Rslt = '';
-        for (let x of this.Order ){
-           switch (x) {
-                case x = 'id':
+        for (let s of this.Order )
+        {
+            let  x = s.formule;
+            switch (x) {
+                case x = 'date_depence':
+                    Rslt += Entry.date_depence + ';';
+                    break;
+                case x = 'Nom':
+                    Rslt += Entry.Nom + ';' ;
+                    break;
+                case x = 'Categorie':
+                    Rslt += Entry.Categorie + ';' ;
+                    break;
+                case x = 'value':
+                    Rslt += Entry.value + ';' ;
+                    break;
+                    case x = 'TVA':
+                    Rslt += Entry.TVA + ';';
+                    break;
+                case x = 'moyen_payement':
+                    Rslt += Entry.moyen_payement + ';' ;
+                    break;
+                case x = 'Nom_marchand':
+                    Rslt += Entry.Nom_marchand + ';' ;
+                    break;
+                case x = 'pays':
+                    Rslt += Entry.pays + ';' ;
+                    break;
+                    case x = 'id':
                     Rslt += Entry.id + ';';
                     break;
-                case x = 'type':
-                    Rslt += Entry.type + ';' ;
-                    break;
-                case x = 'date':
-                    Rslt += Entry.date + ';' ;
-                    break;
-                case x = 'message':
-                    Rslt += Entry.message + ';' ;
+                case x = 'Affaire':
+                    Rslt += Entry.Affaire + ';' ;
                     break;
                 default:
                     break;
@@ -134,11 +112,13 @@ private GetData() {
 
         }
         this.fiche  += Rslt + '\n' ;
+
     }
  }
 
 
- ngOnInit() { }
+
+
 
  
 
