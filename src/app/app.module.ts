@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { AlertService, AuthenticationService, UserService } from './_services/index';
 import { AlertComponent } from './_directives/index';
-//import { AuthGuard } from './_guards/index';
 import { AuthGuard } from './shared';
 import { JwtInterceptor, fakeBackendProvider  } from './_helpers/index';
 

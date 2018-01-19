@@ -15,50 +15,47 @@ export class ExpensesComponent implements OnInit, OnChanges {
     defaultcsv: Export[]= [];
     Order: Array<Format>;
     fiche: String;
-    listeoutput:  Array<any> = [];
-
-
-
+    listeoutput= [];
+    imageWidth: number = 20;
+    imageMargin: number = 2;
     constructor( private userService: UserService) {
-      this.Export = JSON.parse(localStorage.getItem('Expenses'));
-      this.defaultcsv = JSON.parse(localStorage.getItem('CSVdefault'));
-      this.Order = this.defaultcsv[0].order;
-      this.GetEntet();
-      this.GetData();
+     // list of expenses
+      this.Export = JSON.parse(localStorage.getItem('Expenses')) || [];
+     // default format export
+      this.defaultcsv = JSON.parse(localStorage.getItem('CSVdefault')) || [];
+     // list export
+     this.listeoutput = JSON.parse(localStorage.getItem('list')) || [];
+
     }
 
+loadAllUsers() {
+}
 
-    loadAllUsers() {
-        this.userService.getAllcsv().subscribe(csvlist => { this.listeoutput = csvlist; });
-       // this.userService.getAll().subscribe(csvlist => { this.listeoutput = csvlist; });
-
-        console.log('loadAllUsers');
-        console.log(this.listeoutput);
-        console.log(this.Export);
-    }
-
- SaveDemo() {
-
-        const ff = new Blob([this.fiche], { type: 'text/csv;charset=utf-8' });
-        saveAs(ff, 'Defaultcsv.csv');
-  }
-
-
-  getligne()
-    {   this.fiche = '';
+SaveDemo() {
+        this.Order = this.defaultcsv[0].order;
         this.GetEntet();
         this.GetData();
-        console.log(this.fiche);
         const ff = new Blob([this.fiche], { type: 'text/csv;charset=utf-8' });
-        saveAs(ff, 'Exportcsv.csv');
+        saveAs(ff, 'Defaultcsv.csv');
+    }
+
+
+SaveDemoPer(i: number)
+    {   this.Order = this.listeoutput[i].order;
+        this.GetEntet();
+        this.GetData();
+        const ff = new Blob([this.fiche], { type: 'text/csv;charset=utf-8' });
+        saveAs(ff, 'exportpersonalise.csv');
+
     }
 
 //return entet 
-private GetEntet() {
+GetEntet() {
    this.fiche = '';
-   for (let x of this.Order) {
-       this.fiche += x.entet + ';';
-   }
+   for (let x of this.Order)
+        {
+        this.fiche += x.entet + ';';
+        }
     this.fiche += '\n';
 
 }

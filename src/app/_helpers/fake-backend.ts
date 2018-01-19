@@ -47,7 +47,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
              // get list csv
              if (request.url.endsWith('/api/CSV') && request.method === 'GET') {
-                let  CSV: any[] = JSON.parse(localStorage.getItem(CSVLISTNAME)) || [];
+
                 // check for fake auth token in header and return users if valid,
                 if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
                     return Observable.of(new HttpResponse({ status: 200, body: CSV }));

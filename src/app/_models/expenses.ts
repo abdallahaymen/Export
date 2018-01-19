@@ -12,5 +12,6 @@ export class Expenses
     Affaire: string;
     date: string;
     urlimg: string;
+    urlCategorie: string ;
     ischeck: boolean;
 }

@@ -9,19 +9,22 @@
             <div class="card-body">
                 <!-- div for repeat -->
                 <div  class="col-xl-12">
-                    <div class="card mb-3">
+                   
                         <div class="card-body">
                             <div class="row">
                                 
                                 <div class="col col-sm-2">
                                     <p>Name:</p>   
                                 </div>
-                                <div class="col col-sm-4">
-                                    <p> <input type="text" [(ngModel)]="name" class="form-control" (change)="dataChanged($event)"></p>   
+                                <div class="col col-sm-6">
+                                    <p> <input type="text" [(ngModel)]="name" class="form-control" (ngModelChange)="dataChanged($event)"></p>   
+                                    <p style="color: rgb(236, 78, 78)"  *ngIf="showtext">Export Format Already Exists</p>
                                 </div>
+                                
+                               
                             </div>
                        </div>
-                    </div>
+                    
                 </div>
                 <div  class="col-xl-12" dnd-sortable-container [sortableData]="Order">
                     <div class="card mb-3" *ngFor="let item of Order; let i = index"  dnd-sortable [sortableIndex]="i">
@@ -59,15 +62,25 @@
                                 
                             </div>    
                         </div>
-                    </div>
-                    <a (click)="getlist()">Add </a> 
-                    <a (click)="register() ">create </a>   
-                    <a (click)="getallcsv()">get csv </a>    
-                    
+                    </div>          
                     <a (click)="getlist()"> <button type="button" class="btn btn-outline-primary">Add column</button> </a>
-                    
                     <a (click)="register() "><button type="button" class="btn btn-outline-success">Save Export Format</button></a>
-                   
+                    <div>
+                        
+.
+                    <div class="alert alert-success"  *ngIf="show">
+                        <strong>Template saved successfully!</strong> <br>
+                        To use it, go to the Expenses , select some expenses , click "Export to..." and select your new template which now appears in the list.
+
+                        Go back to Settings
+                    </div>
+                    <div class="alert alert-danger"  *ngIf="showtext">
+                        <strong>Export Format Already Exists</strong> <br>
+                        We can't rename the export format because there is already an export format by that name.
+                    </div>
+
+
+                    </div>
                 </div> 
                 <!-- End div -->  
             </div>

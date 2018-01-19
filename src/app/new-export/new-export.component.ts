@@ -2,18 +2,17 @@ import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { saveAs } from 'file-saver/FileSaver';
 import { AlertService, UserService } from '../_services/index';
-import {Export, Format, Expenses} from '../_models/index';
+import { Export, Format, Expenses} from '../_models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Route } from '@angular/router/src/config';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
     selector: 'app-new-export',
     templateUrl: './new-export.component.html',
     styleUrls: ['./new-export.component.scss']
 })
-export class NewexoprtComponent implements OnInit {
-    @Output() show_csv_event = new EventEmitter();
-    model:  = {};
+export class NewexoprtComponent implements OnChanges {
     Export: Array<Expenses> = [];
     csvmodel: any= [];
     csvlist: Export[] = [] ;
@@ -21,9 +20,11 @@ export class NewexoprtComponent implements OnInit {
     defaultcsv: Export[]= [];
     defaultcsv2: Export[]= [];
     listfomule: Array<Format>;
-    name: string;
+    name = 'New Export Format';
     format = 'csv';
-    fiche: String;
+    show: boolean = false;
+    showtext: boolean = false;
+
     constructor(
         private userService: UserService,
         private alertService: AlertService,
@@ -37,69 +38,65 @@ export class NewexoprtComponent implements OnInit {
 
     }
     register() {
+        this.show = false;
+        this.showtext = false;
+        this.csvmodel = JSON.parse(localStorage.getItem('list')) || [];
 
-       /* 
-        }),*/
 
-        this.model = {
-            format: this.format,
-            order: this.Order,
-            name: this.name,
-        };
+        let duplicatescv = this.csvmodel.filter(user => { return user.name === this.name}).length;
+        if (duplicatescv) {
+            this.showtext = true;
 
-        console.log(this.name);
-        console.log(this.model);
-       /* this.userService.createcsv(this.model)
-            .subscribe(
-                data => {
-                    this.alertService.success('Registration successful', true);
-                    console.log('Registration successful');
-                },
-                error => {
-                    this.alertService.error(error);
-                    console.log(error);
+        }
+        else {
+            console.log('enregister');
+            this.csvmodel.push({
+                id: this.csvlist.length,
+                format: this.format,
+                order: this.Order,
+                name: this.name});
+            localStorage.setItem('list', JSON.stringify(this.csvmodel));
+            this.Order = this.defaultcsv2[0].order;
+            this.show = true;
+            this.showtext = false;
+        }
 
-                });
-
-        */
-        this.csvmodel.push({
-            format: this.format,
-            order: this.Order,
-            name: this.name});
-
-       localStorage.setItem('CSVdefault', JSON.stringify(this.csvmodel));
-        this.router.navigate(['/expenses']);
     }
     chengeSelect(i) {
-console.log(i);
+         console.log(i);
     }
-
-
-
-    ngOnInit() {  }
+    ngOnChanges() {
+        this.listfomule = this.defaultcsv2[0].order;
+    }
     getlist() {
         this.Order.push(
             {
                 formule: '',
                 entet: 'Column ' + (this.Order.length + 1)
             }
-            ) ;
+        );
 
     }
-
-    deletelist(i) { this.Order.splice(i, 1) ;
-    console.log(this.Order);
-    console.log(this.listfomule);
+    getCaracter(i) {
+        return String.fromCharCode(65 + i);
     }
-    getCaracter(i) { return String.fromCharCode(65 + i); }
 
     dataChanged($event) {
-        console.log(this.name);
+
+        console.log('is token');
+        this.csvmodel = JSON.parse(localStorage.getItem('list')) || [];
+
+
+        let duplicatescv = this.csvmodel.filter(user => { return user.name === this.name}).length;
+        if (duplicatescv) {
+           console.log('is token');
+           this.showtext = true;
+
+        }
+        else
+        { this.showtext = false ;
+        }
     }
-
-
-
-
     getvalue(Ex: number, item) {
         let Entry= this.Export[Ex] ;
                   let x = this.Order[item].formule;
@@ -128,6 +125,9 @@ console.log(i);
                             return '';
 
                     }
+    }
+    deletelist(i) {
+    this.Order.splice(i, 1) ;
     }
 }
 

@@ -110,6 +110,7 @@ export class LoginComponent implements OnInit {
             Affaire: '1',
             date: '10/12/207',
             imagePath: 'assets/images/info3.jpg',
+            urlCategorie : 'assets/images/restauration.png',
             ischeck: true
         }, {
             id: 1 ,
@@ -124,8 +125,27 @@ export class LoginComponent implements OnInit {
             Affaire: '1',
             date: '25/10/207',
             imagePath: 'assets/images/info1.jpg',
+            urlCategorie : 'assets/images/avion.png',
             ischeck: false
-        }, {
+        },
+        {
+            id: 4 ,
+            date_depence: '10/12/2017',
+            Nom: 'Carburant france',
+            Categorie: 'Carburant',
+            value: '50',
+            TVA: '',
+            moyen_payement: 'Card',
+            Nom_marchand: 'Abc Restaurant',
+            pays: 'France',
+            Affaire: '1',
+            date: '9/12/207',
+            imagePath: 'assets/images/info2.jpg',
+            urlCategorie : 'assets/images/carburant.png',
+
+            ischeck: false
+        },
+        {
             id: 2 ,
             date_depence: '10/12/2017',
             Nom: 'restaurant-Quebec',
@@ -138,6 +158,7 @@ export class LoginComponent implements OnInit {
             Affaire: '1',
             date: '9/12/207',
             imagePath: 'assets/images/info2.jpg',
+            urlCategorie : 'assets/images/restauration.png',
             ischeck: false
         },
         {
@@ -153,6 +174,8 @@ export class LoginComponent implements OnInit {
             Affaire: '1',
             date: '9/12/207',
             imagePath: 'assets/images/info2.jpg',
+            urlCategorie : 'assets/images/restauration.png',
+
             ischeck: false
         });
         localStorage.setItem('Expenses', JSON.stringify(this.Export));

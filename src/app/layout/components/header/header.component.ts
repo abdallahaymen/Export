@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { User} from '../../../_models/index';
 
 @Component({
     selector: 'app-header',
@@ -8,14 +9,14 @@ import { TranslateService } from '@ngx-translate/core';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+    currentUser: User;
     pushRightClass: string = 'push-right';
-
     constructor(private translate: TranslateService, public router: Router) {
-
-        this.translate.addLangs(['en', 'fr', 'ar',  'ur', 'es', 'it', 'fa', 'de']);
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
         const browserLang = this.translate.getBrowserLang();
-        this.translate.use(browserLang.match(/en|fr|ar|ur|es|it|fa|de/) ? browserLang : 'en');
+        this.translate.use(browserLang.match(/en|fr|ur|es|it|fa|de/) ? browserLang : 'en');
 
         this.router.events.subscribe(val => {
             if (

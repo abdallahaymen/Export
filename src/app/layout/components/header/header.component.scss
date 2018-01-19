@@ -1,12 +1,12 @@
-$topnav-background-color: #8ba9eb;
+$topnav-background-color: rgb(38, 136, 195);
 :host {
     .navbar {
         background-color: $topnav-background-color;
         .navbar-brand {
             color: #fff;
         }
-        .nav-item > a {
-            color: #999;
+        .nav-item>a {
+            color: rgb(255, 255, 255);
             &:hover {
                 color: #fff;
             }
@@ -15,7 +15,7 @@ $topnav-background-color: #8ba9eb;
     .messages {
         width: 300px;
         .media {
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid rgb(255, 255, 255);
             padding: 5px 10px;
             &:last-child {
                 border-bottom: none;
